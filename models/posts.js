@@ -5,8 +5,8 @@ const Schema = mongoose.Schema;
 var postValidator = [
   validate({
     validator: "isLength",
-    arguments: [1, 300],
-    message: "Name should be between 3 and 50 characters",
+    arguments: [3, 50],
+    message: "Your post should be between 3 and 50 characters!",
   }),
   validate({
     validator: "isAlphanumeric",
@@ -61,3 +61,6 @@ var postSchema = new Schema(
     usePushEach: true,
   }
 );
+
+var Posts = mongoose.model("Post", postSchema);
+module.exports = Posts;

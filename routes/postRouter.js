@@ -238,12 +238,16 @@ postRouter
             post.comments.id(req.params.commentId) != null &&
             post.comments.id(req.params.commentId).author.equals(req.user._id)
           ) {
+            //This will either add a thumbs up or thumbs down to the current number of likes
             if (req.body.likes) {
-              post.comments.id(req.params.commentId).likes = req.body.likes + 1;
+              post.comments.id(req.params.commentId).likes =
+                post.comments.id(req.params.commentId).likes + req.body.likes;
             }
             if (req.body.comment) {
               post.comments.id(req.params.commentId).comment =
-                "EDIT" + req.body.comment;
+                post.comments.id(req.params.commentId).comment +
+                "\n\nEDIT: " +
+                req.body.comment;
             }
             post.save().then(
               (post) => {
@@ -272,7 +276,7 @@ postRouter
       .catch((err) => next(err));
   })
   .delete(authenticate.verifyUser, (req, res, next) => {
-    Post.findById(req.params.postId)
+    Posts.findById(req.params.postId)
       .then(
         (post) => {
           if (
